@@ -1,0 +1,82 @@
+'use strict';
+
+const CLUSTER_ID = process.env.CLUSTER_ID || 'http://Shashwatkesarw:3030';
+
+module.exports = function (app, request) {
+    app.get("/auth", (req, res) => {
+        var userid = req.query.userid;
+        var pwd = req.query.pwd;
+        request.get(CLUSTER_ID + "/auth?userid=" + userid + "&pwd=" + pwd, { json: true }, (err, resp, body) => {
+            if (err || !body) {
+                res.send("Error while authenticating from " + CLUSTER_ID + "/auth")
+            } else {
+                res.send(body);
+            }
+
+        });
+    });
+
+    app.get("/students", (req, res) => {
+        request(CLUSTER_ID + "/students", { json: true }, (err, resp, body) => {
+            if (err || !body) {
+                res.send("Error while getting users from " + CLUSTER_ID + "/students")
+            } else {
+                res.send(body);
+            }
+
+        });
+    });
+
+    app.post("/students", (req, res) => {
+        request.post({
+            url: CLUSTER_ID + '/students',
+            body: req.body,
+            json: true
+        }, function (err, resp, body) {
+            if (err || !body) {
+                res.send("Error while getting users from " + CLUSTER_ID + '/students')
+            } else {
+                res.send(body);
+            }
+        });
+    });
+
+    app.get("/students/:id", (req, res) => {
+        const id = req.params.id;
+        request(CLUSTER_ID + "/students/" + id, { json: true }, (err, resp, body) => {
+            if (err || !body) {
+                res.send("Error while getting users from " + CLUSTER_ID + "/students")
+            } else {
+                res.send(body);
+            }
+
+        });
+    });
+
+    app.put("/students/:id", (req, res) => {
+        const id = req.params.id;
+        request.put({
+            url: CLUSTER_ID + '/students/' + id,
+            body: req.body,
+            json: true
+        }, function (err, resp, body) {
+            if (err || !body) {
+                res.send("Error while getting users from " + CLUSTER_ID + '/students')
+            } else {
+                res.send(body);
+            }
+        });
+    });
+
+    app.delete("/students/:id", (req, res) => {
+        const id = req.params.id;
+        request.delete(CLUSTER_ID + "/students/" + id, { json: true }, (err, resp, body) => {
+            if (err || !body) {
+                res.send("Error while getting users from " + CLUSTER_ID + "/students")
+            } else {
+                res.send(body);
+            }
+
+        });
+    });
+};
