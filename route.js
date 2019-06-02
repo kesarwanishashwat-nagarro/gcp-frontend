@@ -45,7 +45,7 @@ module.exports = function (app, request) {
 
     app.get("/students/:id", (req, res) => {
         const id = req.params.id;
-        request(CLUSTER_ID + "/students/" + id, { json: true }, (err, resp, body) => {
+        request.get(CLUSTER_ID + "/students/" + id+'?isDelete=false', { json: true }, (err, resp, body) => {
             if (err || !body) {
                 res.send("Error while getting users from " + CLUSTER_ID + "/students")
             } else {
@@ -57,7 +57,8 @@ module.exports = function (app, request) {
 
     app.put("/students/:id", (req, res) => {
         const id = req.params.id;
-        request.put({
+        console.log("in update: "+ id);
+        request.post({
             url: CLUSTER_ID + '/students/' + id,
             body: req.body,
             json: true
@@ -72,7 +73,8 @@ module.exports = function (app, request) {
 
     app.delete("/students/:id", (req, res) => {
         const id = req.params.id;
-        request.delete(CLUSTER_ID + "/students/" + id, { json: true }, (err, resp, body) => {
+        console.log("in delete: "+ id);
+        request.get(CLUSTER_ID + "/students/" + id+'?isDelete=true', { json: true }, (err, resp, body) => {
             if (err || !body) {
                 res.send("Error while getting users from " + CLUSTER_ID + "/students")
             } else {
