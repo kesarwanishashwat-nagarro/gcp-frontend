@@ -1,11 +1,13 @@
 'use strict';
 
-const CLUSTER_ID = process.env.CLUSTER_ID || 'http://Shashwatkesarw:3030';
+const clusterIP = process.env.CLUSTER_ID || 'localhost:3000';
+const CLUSTER_ID = "http://" + clusterIP;
 
 module.exports = function (app, request) {
     app.get("/auth", (req, res) => {
         var userid = req.query.userid;
         var pwd = req.query.pwd;
+        console.log(CLUSTER_ID + "/auth?userid=" + userid + "&pwd=" + pwd);
         request.get(CLUSTER_ID + "/auth?userid=" + userid + "&pwd=" + pwd, { json: true }, (err, resp, body) => {
             if (err || !body) {
                 res.send("Error while authenticating from " + CLUSTER_ID + "/auth")
